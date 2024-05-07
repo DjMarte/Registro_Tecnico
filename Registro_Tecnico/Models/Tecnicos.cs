@@ -12,5 +12,5 @@ public class Tecnicos
     public string? Nombres { get; set; }
 
     [Required(ErrorMessage = "Sueldo obligtorio")]
-    public decimal SueldoHota { get; set; } 
+    public decimal SueldoHora { get; set; } 
 }
