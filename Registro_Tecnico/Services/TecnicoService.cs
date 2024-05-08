@@ -44,7 +44,7 @@ public class TecnicoService
 			.ExecuteDeleteAsync() > 0;
 	}
 
-	public async Task<Tecnicos?> BuscarNomnbre(string nombre) {
+	public async Task<Tecnicos?> BuscarNombre(string nombre) {
 		return await _contexto.Tecnicos
 			.AsNoTracking()
 			.FirstOrDefaultAsync(t => t.Nombres == nombre);
