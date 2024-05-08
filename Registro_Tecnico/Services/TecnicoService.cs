@@ -44,10 +44,10 @@ public class TecnicoService
 			.ExecuteDeleteAsync() > 0;
 	}
 
-	public async Task<Tecnicos?> BuscarId(int id) {
+	public async Task<Tecnicos?> BuscarNomnbre(string nombre) {
 		return await _contexto.Tecnicos
 			.AsNoTracking()
-			.FirstOrDefaultAsync(t => t.TecnicoId == id);
+			.FirstOrDefaultAsync(t => t.Nombres == nombre);
 	}
 
 	public async Task<List<Tecnicos>> ListarTecnico(Expression<Func<Tecnicos, bool>> criterio) {
