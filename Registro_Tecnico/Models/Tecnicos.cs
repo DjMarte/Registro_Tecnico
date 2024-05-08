@@ -7,7 +7,7 @@ public class Tecnicos
     [Key]
     public int TecnicoId { get; set; }
 
-    [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "No se permiten caracteres especiales")]
+    [RegularExpression(@"^[a-zA-Z]\s[a-zA-Z]+$", ErrorMessage = "No se permiten caracteres especiales")]
     [Required(ErrorMessage = "Nombre obligatorio")]
     public string? Nombres { get; set; }
 
