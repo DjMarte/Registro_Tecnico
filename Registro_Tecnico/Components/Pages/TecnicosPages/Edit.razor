@@ -1,0 +1,108 @@
+﻿@page "/Tecnico/EditTecnico"
+@page "/Tecnico/EditTecnico/TecnicoId={TecnicoId:int}"
+
+@inject TecnicoService tecnicoService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Modificar T&eacute;cnico</PageTitle>
+<EditForm Model="Tecnico" OnValidSubmit="Modificar">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<div class="shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<div class="text-center">
+					<h3><strong>Modificar T&eacute;cnico</strong></h3>
+				</div>
+			</div>
+
+
+			@*Body*@
+			<div class="card-body">
+				<div class="row">
+					@*ID*@
+					<div class="col-2">
+						<label class="form-label" for="idTecnico"><strong>T&eacute;cnicoId</strong></label>
+						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId"></InputNumber>
+					</div>
+
+					@*Nombres*@
+					<div class="col-4 ms-5">
+						<label class="form-label" for="nombres"><strong>Nombres</strong></label>
+						<InputText class="form-control" id="nombres" @bind-Value="Tecnico.Nombres"></InputText>
+						<ValidationMessage For="(()=> Tecnico.Nombres)"/>
+					</div>
+
+					@*SueldoHora*@
+					<div class="col-3 ms-5">
+						<label class="form-label" for="sueldoHora"><strong>SueldoHora</strong></label>
+						<InputNumber class="form-control" id="sueldoHora" @bind-Value="Tecnico.SueldoHora"></InputNumber>
+						<ValidationMessage For="(()=> Tecnico.SueldoHora)"/>
+					</div>
+				</div>
+			</div>
+
+			@*Footer*@
+			<div class="card-footer">
+				<div class="text-center">
+					<button type="button" class="btn btn-outline-secondary bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+					<button type="submit" class="btn btn-outline-success bi bi-floppy"> Modificar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@Mensaje
+</EditForm>
+
+
+@code {
+	[Parameter]
+	public int TecnicoId { get; set; }
+
+	public Tecnicos Tecnico { get; set; } = new Tecnicos();
+	public string Mensaje { get; set; } = string.Empty;
+	public string? NombresActuales { get; set; }
+
+	protected override async Task OnInitializedAsync() {
+		await Task.Delay(2000);
+		Tecnico = await tecnicoService.BuscarId(TecnicoId);
+		NombresActuales = Tecnico.Nombres;
+	}
+
+	public async Task Modificar() {
+		if (!await Validar()) {
+			var modificar = await tecnicoService.Crear(Tecnico);
+			if (modificar) {
+				Mensaje = "El técnico se ha editado correctamente";
+				await Task.Delay(2000);
+				Volver();
+			}
+			else {
+				Mensaje = "El técnico no se ha podido modificar correctamente";
+			}
+		}
+		else {
+			Mensaje = "Ya existe un técnico con este nombre";
+		}
+	}
+
+	public async Task<bool> Validar() {
+
+		var existe = await tecnicoService.BuscarNombre(Tecnico.Nombres);
+
+		if (existe is not null)
+			if (existe.Nombres == NombresActuales)
+				return false;
+			else
+				return true;
+
+		else
+			return false;
+	}
+
+	public void Volver() {
+		Navigation.NavigateTo("Tecnico/TecnicosIndex");
+	}
+}
