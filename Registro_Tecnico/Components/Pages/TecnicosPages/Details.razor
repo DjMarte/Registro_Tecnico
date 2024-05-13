@@ -36,7 +36,6 @@
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
 
 	protected override async Task OnInitializedAsync() {
-		await Task.Delay(2000);
 		Tecnico = await tecnicoService.BuscarId(TecnicoId);
 	}
 
