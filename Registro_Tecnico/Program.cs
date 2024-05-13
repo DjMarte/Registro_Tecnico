@@ -18,7 +18,6 @@ namespace Registro_Tecnico
 			var ConStr = builder.Configuration.GetConnectionString("ConStr");
 			builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlite(ConStr));
 
-			builder.Services.AddScoped<Tecnicos>();
 			builder.Services.AddScoped<TecnicoService>();
 
 			var app = builder.Build();
