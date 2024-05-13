@@ -51,7 +51,6 @@
 	public string Mensaje { get; set; } = string.Empty;
 
 	protected override async Task OnInitializedAsync() {
-		await Task.Delay(2000);
 		Tecnico = await tecnicoService.BuscarId(TecnicoId);
 	}
 
