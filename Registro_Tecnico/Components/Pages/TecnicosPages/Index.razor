@@ -60,7 +60,6 @@
 	public List<Tecnicos> Tecnicos { get; set; } = new List<Tecnicos>();
 
 	protected override async Task OnInitializedAsync() {
-		await Task.Delay(500);
 		Tecnicos = await tecnicoService.ListarTecnico(t => t.TecnicoId > 0);
 	}
 
