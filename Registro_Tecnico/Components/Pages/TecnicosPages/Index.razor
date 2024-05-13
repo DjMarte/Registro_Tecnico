@@ -14,7 +14,7 @@
 				<h2><strong>Listado de T&eacute;cnicos</strong></h2>
 			</div>
 			<div class="text-end">
-				<button type="button" class="btn btn-outline-primary" @onclick="Ir_A_Crear">Crear</button>
+				<button type="button" class="btn btn-outline-primary" @onclick="IrCrear">Crear</button>
 			</div>
 		</div>
 
@@ -38,9 +38,9 @@
 								<td>@tecnico.TecnicoId</td>
 								<td>@tecnico.Nombres</td>
 								<td>@tecnico.SueldoHora.ToString("N2")</td>
-								<td><button trype="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> Ir_A_Editar(tecnico.TecnicoId)"></button></td>
-								<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> Ir_A_Detalle(tecnico.TecnicoId)"></button></td>
-								<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=> Ir_A_Eliminar(tecnico.TecnicoId)"></button></td>
+								<td><button trype="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> IrEditar(tecnico.TecnicoId)"></button></td>
+								<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> IrDetalle(tecnico.TecnicoId)"></button></td>
+								<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=> IrEliminar(tecnico.TecnicoId)"></button></td>
 							</tr>
 						}
 					</tbody>
@@ -63,19 +63,19 @@
 		Tecnicos = await tecnicoService.ListarTecnico(t => t.TecnicoId > 0);
 	}
 
-	public void Ir_A_Crear() {
+	public void IrCrear() {
 		Navigation.NavigateTo("/Tecnico/CreateTecnico");
 	}
 
-	public void Ir_A_Editar(int id) {
+	public void IrEditar(int id) {
 		Navigation.NavigateTo($"/Tecnico/EditTecnico/TecnicoId={id}");
 	}
 	
-	public void Ir_A_Detalle(int id) {
+	public void IrDetalle(int id) {
 		Navigation.NavigateTo($"/Tecnico/DetailsTecnico/TecnicoId={id}");
 	}
 	
-	public void Ir_A_Eliminar(int id) {
+	public void IrEliminar(int id) {
 		Navigation.NavigateTo($"/Tecnico/DeleteTecnico/TecnicoId={id}");
 	}
 }
