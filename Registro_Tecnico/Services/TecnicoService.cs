@@ -14,7 +14,7 @@ public class TecnicoService
         _contexto = contexto;
     }
 
-    public async Task<bool> Crear(Tecnicos tecnico) {
+    public async Task<bool> Guardar(Tecnicos tecnico) {
         if (!await Existe(tecnico.TecnicoId))
             return await Insertar(tecnico);
         else
