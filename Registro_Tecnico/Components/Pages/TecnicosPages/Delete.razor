@@ -1,5 +1,4 @@
-﻿@page "/Tecnico/DeleteTecnico"
-@page "/Tecnico/DeleteTecnico/TecnicoId={TecnicoId:int}"
+﻿@page "/Tecnico/Delete/{TecnicoId:int}"
 
 @inject TecnicoService tecnicoService
 @inject NavigationManager Navigation
@@ -67,6 +66,6 @@
 	}
 
 	public void Volver() {
-		Navigation.NavigateTo("/Tecnico/TecnicosIndex");
+		Navigation.NavigateTo("/Tecnico/Index");
 	}
 }

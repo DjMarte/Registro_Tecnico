@@ -1,4 +1,4 @@
-﻿@page "/Tecnico/TecnicosIndex"
+﻿@page "/Tecnico/Index"
 
 @inject TecnicoService tecnicoService
 @inject NavigationManager Navigation
@@ -64,18 +64,18 @@
 	}
 
 	public void IrCrear() {
-		Navigation.NavigateTo("/Tecnico/CreateTecnico");
+		Navigation.NavigateTo("/Tecnico/Create");
 	}
 
 	public void IrEditar(int id) {
-		Navigation.NavigateTo($"/Tecnico/EditTecnico/TecnicoId={id}");
+		Navigation.NavigateTo($"/Tecnico/Edit/{id}");
 	}
 	
 	public void IrDetalle(int id) {
-		Navigation.NavigateTo($"/Tecnico/DetailsTecnico/TecnicoId={id}");
+		Navigation.NavigateTo($"/Tecnico/Details/{id}");
 	}
 	
 	public void IrEliminar(int id) {
-		Navigation.NavigateTo($"/Tecnico/DeleteTecnico/TecnicoId={id}");
+		Navigation.NavigateTo($"/Tecnico/Delete/{id}");
 	}
 }
