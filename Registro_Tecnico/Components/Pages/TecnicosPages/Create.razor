@@ -62,7 +62,7 @@
 
 	public async Task Crear() {
 		if(!await Validar()) {
-			var crear = await tecnicoService.Crear(Tecnico);
+			var crear = await tecnicoService.Guardar(Tecnico);
 			if (crear) {
 				Mensaje = $"El técnico {Tecnico.Nombres} ha sido creado correctamente";
 				await Task.Delay(2000);
