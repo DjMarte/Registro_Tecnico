@@ -76,12 +76,8 @@
 	}
 
 	public async Task<bool> Validar() {
-		var existe = await tecnicoService.BuscarNombre(Tecnico.Nombres);
-		
-		if (existe is not null)
-			return true;
-		else
-			return false;
+		var existe = await tecnicoService.ExisteNombre(Tecnico.TecnicoId, Tecnico.Nombres);
+		return existe;
 	}
 
 	public void LimpiarPantalla() {

@@ -71,7 +71,7 @@
 
 	public async Task Modificar() {
 		if (!await Validar()) {
-			var modificar = await tecnicoService.Guardar(Tecnico);
+			var modificar = await tecnicoService.Guardar(Tecnico); // cuando entra ahi el codigo e'plota
 			if (modificar) {
 				Mensaje = "El técnico se ha editado correctamente";
 				Volver();
@@ -87,16 +87,8 @@
 
 	public async Task<bool> Validar() {
 
-		var existe = await tecnicoService.BuscarNombre(Tecnico.Nombres);
-
-		if (existe is not null)
-			if (existe.Nombres == NombresActuales)
-				return false;
-			else
-				return true;
-
-		else
-			return false;
+		var existe = await tecnicoService.ExisteNombre(Tecnico.TecnicoId, Tecnico.Nombres);
+		return existe;
 	}
 
 	public void Volver() {
