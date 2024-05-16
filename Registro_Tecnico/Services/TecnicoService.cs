@@ -22,7 +22,14 @@ public class TecnicoService
     }
 
 	private async Task<bool> Existe(int tecnicoId) {
-		return await _contexto.Tecnicos.AnyAsync(t => t.TecnicoId ==  tecnicoId);
+		return await _contexto.Tecnicos
+			.AnyAsync(t => t.TecnicoId == tecnicoId);
+	}
+	
+	private async Task<bool> ExisteNombre(int tecnicoId, string nombre) {
+		return await _contexto.Tecnicos
+			.AnyAsync(t => t.TecnicoId != tecnicoId 
+			&& t.Nombres.ToLower().Equals(nombre));
 	}
 
 	private async Task<bool> Insertar(Tecnicos tecnico) {
@@ -42,12 +49,6 @@ public class TecnicoService
 			.AsNoTracking()
 			.Where(t => t.TecnicoId == tecnico.TecnicoId)
 			.ExecuteDeleteAsync() > 0;
-	}
-
-	public async Task<Tecnicos?> BuscarNombre(string nombre) {
-		return await _contexto.Tecnicos
-			.AsNoTracking()
-			.FirstOrDefaultAsync(t => t.Nombres == nombre);
 	}
 
 	public async Task<Tecnicos?> BuscarId(int id) {
