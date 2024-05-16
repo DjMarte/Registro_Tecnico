@@ -57,7 +57,6 @@
 		var eliminar = await tecnicoService.Eliminar(Tecnico);
 		if(eliminar) {
 			Mensaje = $"El técnico {Tecnico.Nombres} ha sido eliminado correctamente";
-			await Task.Delay(3000);
 			Volver();
 		}
 		else {

@@ -65,7 +65,6 @@
 	public string? NombresActuales { get; set; }
 
 	protected override async Task OnInitializedAsync() {
-		await Task.Delay(2000);
 		Tecnico = await tecnicoService.BuscarId(TecnicoId);
 		NombresActuales = Tecnico.Nombres;
 	}
@@ -75,7 +74,6 @@
 			var modificar = await tecnicoService.Guardar(Tecnico);
 			if (modificar) {
 				Mensaje = "El técnico se ha editado correctamente";
-				await Task.Delay(2000);
 				Volver();
 			}
 			else {
