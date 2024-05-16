@@ -9,26 +9,25 @@ public class TecnicoService
 {
 	private readonly Contexto _contexto;
 
-    public TecnicoService(Contexto contexto)
-    {
-        _contexto = contexto;
-    }
+	public TecnicoService(Contexto contexto) {
+		_contexto = contexto;
+	}
 
-    public async Task<bool> Guardar(Tecnicos tecnico) {
-        if (!await Existe(tecnico.TecnicoId))
-            return await Insertar(tecnico);
-        else
-            return await Modificar(tecnico);
-    }
+	public async Task<bool> Guardar(Tecnicos tecnico) {
+		if (!await Existe(tecnico.TecnicoId))
+			return await Insertar(tecnico);
+		else
+			return await Modificar(tecnico);
+	}
 
 	private async Task<bool> Existe(int tecnicoId) {
 		return await _contexto.Tecnicos
 			.AnyAsync(t => t.TecnicoId == tecnicoId);
 	}
-	
+
 	public async Task<bool> ExisteNombre(int tecnicoId, string nombre) {
 		return await _contexto.Tecnicos
-			.AnyAsync(t => t.TecnicoId != tecnicoId 
+			.AnyAsync(t => t.TecnicoId != tecnicoId
 			&& t.Nombres.ToLower().Equals(nombre.ToLower()));
 	}
 
@@ -39,11 +38,10 @@ public class TecnicoService
 
 	private async Task<bool> Modificar(Tecnicos tecnico) {
 		_contexto.Update(tecnico);
-		_contexto.Entry(tecnico).State = EntityState.Detached;
 		var modificado = await _contexto.SaveChangesAsync() > 0;
+		_contexto.Entry(tecnico).State = EntityState.Detached;
 		return modificado;
 	}
-
 	public async Task<bool> Eliminar(Tecnicos tecnico) {
 		return await _contexto.Tecnicos
 			.AsNoTracking()
