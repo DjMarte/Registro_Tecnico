@@ -15,7 +15,6 @@
 					<h3><strong>Crear un nuevo T&eacute;cnico</strong></h3>
 				</div>
 			</div>
-
 			@*Body*@
 			<div class="card-body">
 				<div class="row">
@@ -24,14 +23,12 @@
 						<label class="form-label" for="idTecnico"><strong>T&eacute;cnicoId</strong></label>
 						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId"></InputNumber>
 					</div>
-
 					@*Nombres*@
 					<div class="col-4 ms-5">
 						<label class="form-label" for="nombres"><strong>Nombres</strong></label>
 						<InputText class="form-control" id="nombre" @bind-Value="Tecnico.Nombres"></InputText>
 						<ValidationMessage For="(()=> Tecnico.Nombres)"></ValidationMessage>
 					</div>
-
 					@*SueldoHora*@
 					<div class="col-3 ms-5">
 						<label class="form-label" for="sueldoHora"><strong>SueldoHora</strong></label>
@@ -39,9 +36,7 @@
 						<ValidationMessage For="(()=> Tecnico.SueldoHora)"></ValidationMessage>
 					</div>
 				</div>
-
 			</div>
-
 			@*Footer*@
 			<div class="card-footer">
 				<div class="text-center">
