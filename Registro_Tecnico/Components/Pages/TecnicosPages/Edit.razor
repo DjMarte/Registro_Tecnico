@@ -62,11 +62,9 @@
 
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
 	public string Mensaje { get; set; } = string.Empty;
-	public string? NombresActuales { get; set; }
 
 	protected override async Task OnInitializedAsync() {
 		Tecnico = await tecnicoService.BuscarId(TecnicoId);
-		NombresActuales = Tecnico.Nombres;
 	}
 
 	public async Task Modificar() {
