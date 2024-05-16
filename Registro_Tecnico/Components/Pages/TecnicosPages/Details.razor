@@ -18,7 +18,6 @@
 				<li><strong>SueldoHora: </strong>@Tecnico.SueldoHora.ToString("N2")</li>
 			</ul>
 		</div>
-
 		@*Footer*@
 		<div class="card-footer">
 			<div class="text-center">
@@ -31,7 +30,6 @@
 @code {
 	[Parameter]
 	public int TecnicoId { get; set; }
-
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
 
 	protected override async Task OnInitializedAsync() {

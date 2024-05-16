@@ -1,9 +1,7 @@
 ﻿@page "/Tecnico/Delete/{TecnicoId:int}"
-
 @inject TecnicoService tecnicoService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-
 
 <PageTitle>Eliminar T&eacute;cnico</PageTitle>
 <div class="container-sm">
@@ -14,7 +12,6 @@
 				<h3><strong>Eliminar T&eacute;cnico</strong></h3>
 			</div>
 		</div>
-
 		@*Body*@
 		<div class="card-body">
 			<div class="text-center">
@@ -26,7 +23,6 @@
 				<li><strong>SueldoHora: </strong>@Tecnico.SueldoHora.ToString("N2")</li>
 			</ul>
 		</div>
-
 		@*Footer*@
 		<div class="card-footer">
 			<div class="text-center">
@@ -35,12 +31,8 @@
 			</div>
 		</div>
 	</div>
-
 	@Mensaje
 </div>
-
-
-
 
 @code {
 	[Parameter]
@@ -63,7 +55,6 @@
 			Mensaje = "El técnico no se ha podido eliminar";
 		}
 	}
-
 	public void Volver() {
 		Navigation.NavigateTo("/Tecnico/Index");
 	}

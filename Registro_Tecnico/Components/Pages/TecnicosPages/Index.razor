@@ -1,9 +1,7 @@
 ﻿@page "/Tecnico/Index"
-
 @inject TecnicoService tecnicoService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-
 
 <PageTitle>Index Tecnico</PageTitle>
 <div class="container">
@@ -17,7 +15,6 @@
 				<button type="button" class="btn btn-outline-primary" @onclick="MostrarPantallaCrear">Crear</button>
 			</div>
 		</div>
-
 		@*Body*@
 		<div class="card-body">
 			<div class="text-center">
@@ -47,14 +44,12 @@
 				</table>
 			</div>
 		</div>
-
 		@*footer*@
 		<div class="card-footer">
 			<p><strong>Total de T&eacute;cnicos: @Tecnicos.Count()</strong></p>
 		</div>
 	</div>
 </div>
-
 
 @code {
 	public List<Tecnicos> Tecnicos { get; set; } = new List<Tecnicos>();
@@ -66,15 +61,12 @@
 	public void MostrarPantallaCrear() {
 		Navigation.NavigateTo("/Tecnico/Create");
 	}
-
 	public void MostrarPantallaEditar(int id) {
 		Navigation.NavigateTo($"/Tecnico/Edit/{id}");
 	}
-	
 	public void MostrarPantallaDetalle(int id) {
 		Navigation.NavigateTo($"/Tecnico/Details/{id}");
 	}
-	
 	public void MostrarPantallaEliminar(int id) {
 		Navigation.NavigateTo($"/Tecnico/Delete/{id}");
 	}
