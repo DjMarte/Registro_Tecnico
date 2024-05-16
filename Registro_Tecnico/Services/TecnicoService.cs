@@ -26,10 +26,10 @@ public class TecnicoService
 			.AnyAsync(t => t.TecnicoId == tecnicoId);
 	}
 	
-	private async Task<bool> ExisteNombre(int tecnicoId, string nombre) {
+	public async Task<bool> ExisteNombre(int tecnicoId, string nombre) {
 		return await _contexto.Tecnicos
 			.AnyAsync(t => t.TecnicoId != tecnicoId 
-			&& t.Nombres.ToLower().Equals(nombre));
+			&& t.Nombres.ToLower().Equals(nombre.ToLower()));
 	}
 
 	private async Task<bool> Insertar(Tecnicos tecnico) {
@@ -39,8 +39,8 @@ public class TecnicoService
 
 	private async Task<bool> Modificar(Tecnicos tecnico) {
 		_contexto.Update(tecnico);
-		var modificado = await _contexto.SaveChangesAsync() > 0;
 		_contexto.Entry(tecnico).State = EntityState.Detached;
+		var modificado = await _contexto.SaveChangesAsync() > 0;
 		return modificado;
 	}
 
