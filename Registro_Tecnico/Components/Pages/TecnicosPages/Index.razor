@@ -17,25 +17,29 @@
 		</div>
 		@*Body*@
 		<div class="card-body">
-			<div class="row mb-3 align-items-end">
-				<div class="col-md-3">
-					<label for="Filtro" class="form-label">Filtrar por:</label>
-					<select @bind="filtro" class="form-select">
+			<div class="row">
+				@*Filtro*@
+				<div class="col-3">
+					<label class="form-label" for="Filtro">Filtrar por:</label>
+					<select class="form-select" @bind="filtro">
 						<option value="id">ID</option>
-						<option value="descripcion">Descripci&oacuten</option>
-						<option value="diascompromiso">D&iacuteas Compromiso</option>
+						<option value="nombres">Nombres</option>
 					</select>
 				</div>
-				<div class="col-md-6">
-					<label for="ValorFiltro" class="form-label">Búsqueda:</label>
+				@*Busqueda*@
+				<div class="col-6 ms-3">
+					<label class="form-label" for="ValorFiltro">B&uacute;squeda</label>
 					<div class="input-group">
-						<input @bind="valorFiltro" class="form-control" placeholder="Buscar" />
-						<button @onclick="Buscar" class="btn btn-outline-primary" type="button">
-							<span class="bi bi-search"></span> Buscar
-						</button>
+						<input class="form-control" @bind="valorFiltro"  placeholder="Buscar" />
+						<button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+						<div class="ms-5">
+							<button type="button" class="btn btn-outline-primary bi bi-arrow-counterclockwise" @onclick="OnInitializedAsync"> Restablecer</button>
+						</div>
 					</div>
 				</div>
-			<div class="text-center">
+			</div>
+			@*Tabla*@
+			<div class="text-center mt-3">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -79,18 +83,17 @@
 	}
 
 	private async Task Buscar() {
-		var variable = valorFiltro;
 		if (valorFiltro.Trim() != "") {
-			if (filtro == "id" && int.TryParse(valorFiltro, out int nuevoId)) {
-				var identificador = Tecnicos.Where(t => t.TecnicoId == nuevoId).ToList();
+			if (filtro == "id" && int.TryParse(valorFiltro, out int tecnicoId)) {
+				var identificador = Tecnicos.Where(t => t.TecnicoId == tecnicoId).ToList();
 				Tecnicos = identificador;
 			}
 			else if (filtro == "nombres") {
-				ListaPrioridades = await PrioridadesService.Listar(p => p.Descripcion == valorFiltro);
+				Tecnicos = await tecnicoService.Listar(t => t.Nombres == valorFiltro);
 			}
 		}
 		else {
-			ListaPrioridades = await PrioridadesService.Listar(p => true);
+			Tecnicos = await tecnicoService.Listar(t => true);
 		}
 	}
 
