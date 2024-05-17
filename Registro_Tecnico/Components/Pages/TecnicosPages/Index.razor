@@ -17,6 +17,24 @@
 		</div>
 		@*Body*@
 		<div class="card-body">
+			<div class="row mb-3 align-items-end">
+				<div class="col-md-3">
+					<label for="Filtro" class="form-label">Filtrar por:</label>
+					<select @bind="filtro" class="form-select">
+						<option value="id">ID</option>
+						<option value="descripcion">Descripci&oacuten</option>
+						<option value="diascompromiso">D&iacuteas Compromiso</option>
+					</select>
+				</div>
+				<div class="col-md-6">
+					<label for="ValorFiltro" class="form-label">Búsqueda:</label>
+					<div class="input-group">
+						<input @bind="valorFiltro" class="form-control" placeholder="Buscar" />
+						<button @onclick="Buscar" class="btn btn-outline-primary" type="button">
+							<span class="bi bi-search"></span> Buscar
+						</button>
+					</div>
+				</div>
 			<div class="text-center">
 				<table class="table table-bordered">
 					<thead>
@@ -53,9 +71,27 @@
 
 @code {
 	public List<Tecnicos> Tecnicos { get; set; } = new List<Tecnicos>();
+	private string filtro = "Id";
+	private string valorFiltro = "";
 
 	protected override async Task OnInitializedAsync() {
-		Tecnicos = await tecnicoService.ListarTecnico(t => t.TecnicoId > 0);
+		Tecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
+	}
+
+	private async Task Buscar() {
+		var variable = valorFiltro;
+		if (valorFiltro.Trim() != "") {
+			if (filtro == "id" && int.TryParse(valorFiltro, out int nuevoId)) {
+				var identificador = Tecnicos.Where(t => t.TecnicoId == nuevoId).ToList();
+				Tecnicos = identificador;
+			}
+			else if (filtro == "nombres") {
+				ListaPrioridades = await PrioridadesService.Listar(p => p.Descripcion == valorFiltro);
+			}
+		}
+		else {
+			ListaPrioridades = await PrioridadesService.Listar(p => true);
+		}
 	}
 
 	public void MostrarPantallaCrear() {

@@ -55,7 +55,7 @@ public class TecnicoService
 			.FirstOrDefaultAsync(t => t.TecnicoId == id);
 	}
 
-	public async Task<List<Tecnicos>> ListarTecnico(Expression<Func<Tecnicos, bool>> criterio) {
+	public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio) {
 		return await _contexto.Tecnicos
 			.AsNoTracking()
 			.Where(criterio)
