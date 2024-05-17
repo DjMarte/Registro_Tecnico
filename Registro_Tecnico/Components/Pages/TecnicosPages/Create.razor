@@ -54,18 +54,20 @@
 	public string? Mensaje { get; set; }
 
 	public async Task Crear() {
-		if(!await Validar()) {
-			var crear = await tecnicoService.Guardar(Tecnico);
-			if (crear) {
-				Mensaje = $"El técnico {Tecnico.Nombres} ha sido creado correctamente";
-				LimpiarPantalla();
-				Volver();
-			}
-			else 
-				Mensaje = "El técnico no se ha podido crear correctamente";
-		}
-		else
+		if (await Validar()) {
 			Mensaje = "Ya existe un técnico con este nombre";
+			return;
+		}
+
+		var crear = await tecnicoService.Guardar(Tecnico);
+		if (crear) {
+			Mensaje = "El técnico se ha creado correctamente";
+			Volver();
+		}
+
+		else {
+			Mensaje = "No se ha podido crear correctamente el técnico";
+		}
 	}
 
 	public async Task<bool> Validar() {

@@ -60,17 +60,20 @@
 	}
 
 	public async Task Modificar() {
-		if (!await Validar()) {
-			var modificar = await tecnicoService.Guardar(Tecnico);
-			if (modificar) {
-				Mensaje = "El técnico se ha editado correctamente";
-				Volver();
-			}
-			else
-				Mensaje = "El técnico no se ha podido modificar correctamente";
-		}
-		else
+		if (await Validar()) {
 			Mensaje = "Ya existe un técnico con este nombre";
+			return;
+		}
+
+		var modificar = await tecnicoService.Guardar(Tecnico);
+		if (modificar) {
+			Mensaje = "El técnico se ha modificado correctamente";
+			Volver();
+		}
+
+		else {
+			Mensaje = "No se ha podido modificar correctamente el técnico";
+		}
 	}
 
 	public async Task<bool> Validar() {
