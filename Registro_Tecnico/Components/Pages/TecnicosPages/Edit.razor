@@ -61,7 +61,7 @@
 
 	public async Task Modificar() {
 		if (!await Validar()) {
-			var modificar = await tecnicoService.Guardar(Tecnico); // cuando entra ahi el codigo e'plota
+			var modificar = await tecnicoService.Guardar(Tecnico);
 			if (modificar) {
 				Mensaje = "El técnico se ha editado correctamente";
 				Volver();
