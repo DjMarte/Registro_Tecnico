@@ -54,8 +54,6 @@
 
 @code {
 	public List<TiposTecnicos> ListaTiposTecnicos { get; set; } = new List<TiposTecnicos>();
-	private string filtro = "";
-	private string valorFiltro = "";
 
 	protected override async Task OnInitializedAsync() {
 		ListaTiposTecnicos = await tipoTecnicoService.Listar(tp => tp.TipoId > 0);
