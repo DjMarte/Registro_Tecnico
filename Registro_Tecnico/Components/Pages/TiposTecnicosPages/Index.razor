@@ -10,7 +10,7 @@
 		@*Header*@
 		<div class="card-header">
 			<div class="text-center">
-				<h3>Listado de Tipo de T&eacute;cnicos</h3>
+				<h3><strong>Listado de Tipo de T&eacute;cnicos</strong></h3>
 			</div>
 			<div class="text-end">
 				<button type="button" class="btn btn-outline-primary" @onclick="MostrarPantallaCrear"> Crear</button>
@@ -20,29 +20,33 @@
 		<div class="card-body">
 			@*Tabla*@
 			<div class="text-center mt-3">
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>TipoId</th>
-							<th>Descripci&oacute;n</th>
-							<th>Observar</th>
-							<th>Editar</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach(var tipoTecnico in ListaTiposTecnicos)
-						{
+				@if (ListaTiposTecnicos != null) {
+					<h4><strong>La lista de t&eacute;cnicos est&aacute; vac&iacute;a</strong></h4>
+				}
+				else {
+					<table class="table table-bordered">
+						<thead>
 							<tr>
-								<td>@tipoTecnico.TipoId</td>
-								<td>@tipoTecnico.Descripcion</td>
-								<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
-								<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
-								<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
+								<th>TipoId</th>
+								<th>Descripci&oacute;n</th>
+								<th>Observar</th>
+								<th>Editar</th>
+								<th>Eliminar</th>
 							</tr>
-						}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							@foreach (var tipoTecnico in ListaTiposTecnicos) {
+								<tr>
+									<td>@tipoTecnico.TipoId</td>
+									<td>@tipoTecnico.Descripcion</td>
+									<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
 			</div>
 		</div>
 		@*Footer*@
@@ -66,11 +70,11 @@
 	public void MostrarPantallaDetalle(int id) {
 		Navigation.NavigateTo($"/TipoTecnico/Details/{id}");
 	}
-	
+
 	public void MostrarPantallaEditar(int id) {
 		Navigation.NavigateTo($"/TipoTecnico/Edit/{id}");
 	}
-	
+
 	public void MostrarPantallaEliminar(int id) {
 		Navigation.NavigateTo($"/TipoTecnico/Delete/{id}");
 	}
