@@ -39,9 +39,9 @@
 					</div>
 					@*Tipo Tecnico*@
 					<div class="col-3 ms-5">
-						<label class="form-label" for="Tipos">Tipo</label>
+						<label class="form-label" for="Tipos"><strong>Tipo</strong></label>
 						<InputSelect id="Tipos" class="form-select" @bind-Value="Tecnico.TipoId">
-							<opction value="0">Selecciona un Tipo</opction>
+							<option value="0">Selecciona un Tipo</option>
 							@foreach (var tipotecnico in TiposTecnicos)
 							{
 								<option value="@tipotecnico.TipoId">@tipotecnico.Descripcion</option>
