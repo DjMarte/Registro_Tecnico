@@ -1,10 +1,11 @@
 ﻿@page "/Tecnico/Index"
 @inject TecnicoService tecnicoService
+@inject TipoTecnicoService tipoTecnicoService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
 <PageTitle>Index Tecnico</PageTitle>
-<div class="container">
+<div class="card">
 	<div class="shadow-lg">
 		@*Header*@
 		<div class="card-header">
@@ -22,8 +23,10 @@
 				<div class="col-3">
 					<label class="form-label" for="Filtro">Filtrar por:</label>
 					<select class="form-select" @bind="filtro">
-						<option value="id">ID</option>
-						<option value="nombres">Nombres</option>
+						<option value="" selected>Elija una opci&oacute;n</option>
+						<option value="id"><strong>ID</strong></option>
+						<option value="nombres"><strong>Nombres</strong></option>
+						<option value="descripcion"><strong>Descripci&oacute;n</strong></option>
 					</select>
 				</div>
 				@*Busqueda*@
@@ -33,7 +36,7 @@
 						<input class="form-control" @bind="valorFiltro"  placeholder="Buscar" />
 						<button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
 						<div class="ms-5">
-							<button type="button" class="btn btn-outline-primary bi bi-arrow-counterclockwise" @onclick="OnInitializedAsync"> Restablecer</button>
+							<button type="button" class="btn btn-outline-primary bi bi-arrow-counterclockwise" @onclick="Restablecer"> Restablecer</button>
 						</div>
 					</div>
 				</div>
@@ -45,6 +48,7 @@
 						<tr>
 							<th>T&eacute;cnicoId</th>
 							<th>Nombre</th>
+							<th>Descripci&oacute;n</th>
 							<th>SueldoHora</th>
 							<th>Editar</th>
 							<th>Detalle</th>
@@ -56,6 +60,7 @@
 							<tr>
 								<td>@tecnico.TecnicoId</td>
 								<td>@tecnico.Nombres</td>
+								<td>@ObtenerDescripcion(tecnico.TipoId)</td>
 								<td>@tecnico.SueldoHora.ToString("N2")</td>
 								<td><button trype="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> MostrarPantallaEditar(tecnico.TecnicoId)"></button></td>
 								<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> MostrarPantallaDetalle(tecnico.TecnicoId)"></button></td>
@@ -75,11 +80,18 @@
 
 @code {
 	public List<Tecnicos> Tecnicos { get; set; } = new List<Tecnicos>();
-	private string filtro = "Id";
+	public List<TiposTecnicos> ListaTiposTecnicos { get; set; } = new List<TiposTecnicos>();
+	private string filtro = "";
 	private string valorFiltro = "";
 
 	protected override async Task OnInitializedAsync() {
 		Tecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
+		ListaTiposTecnicos = await tipoTecnicoService.Listar(t => t.TipoId > 0);
+	}
+
+	public string ObtenerDescripcion(int id) {
+		var descripcion = ListaTiposTecnicos.FirstOrDefault(d => d.TipoId == id);
+		return descripcion.Descripcion;
 	}
 
 	private async Task Buscar() {
@@ -91,10 +103,22 @@
 			else if (filtro == "nombres") {
 				Tecnicos = await tecnicoService.Listar(t => t.Nombres == valorFiltro);
 			}
+			else if (filtro == "descripcion") {
+				var tipo = ListaTiposTecnicos.FirstOrDefault(t => t.Descripcion.Equals(valorFiltro, StringComparison.OrdinalIgnoreCase));
+				if (tipo != null) {
+					Tecnicos = await tecnicoService.Listar(t => t.TipoId == tipo.TipoId);
+				}
+			}
 		}
 		else {
 			Tecnicos = await tecnicoService.Listar(t => true);
 		}
+	}
+
+	public async Task Restablecer() {
+		Tecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
+		filtro = string.Empty;
+		valorFiltro = string.Empty;
 	}
 
 	public void MostrarPantallaCrear() {
