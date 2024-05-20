@@ -4,7 +4,8 @@
 @rendermode InteractiveServer
 
 <PageTitle>Eliminar T&eacute;cnico</PageTitle>
-<div class="container-sm">
+<Toasts class="p-3" Messages="Mensaje" Placement="ToastsPlacement.TopRight" />
+<div class="card">
 	<div class="shadow-lg">
 		@*Header*@
 		<div class="card-header">
@@ -31,7 +32,6 @@
 			</div>
 		</div>
 	</div>
-	@Mensaje
 </div>
 
 @code {
@@ -39,7 +39,19 @@
 	public int TecnicoId { get; set; }
 
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
-	public string Mensaje { get; set; } = string.Empty;
+	List<ToastMessage> Mensaje = new List<ToastMessage>();
+
+	private void MostrarMensaje(ToastType toastType, string mensaje) {
+		Mensaje.Add(CreateToastMessage(toastType, mensaje));
+	}
+
+	private ToastMessage CreateToastMessage(ToastType toastType, string mensaje)
+	=> new ToastMessage {
+			Type = toastType,
+			Title = "Notificación",
+			HelpText = $"{DateTime.Now}",
+			Message = mensaje,
+		};
 
 	protected override async Task OnInitializedAsync() {
 		Tecnico = await tecnicoService.BuscarId(TecnicoId);
@@ -47,13 +59,13 @@
 
 	public async Task Eliminar() {
 		var eliminar = await tecnicoService.Eliminar(Tecnico);
-		if(eliminar) {
-			Mensaje = $"El técnico {Tecnico.Nombres} ha sido eliminado correctamente";
-			Volver();
-		}
+		if (eliminar)
+			MostrarMensaje(ToastType.Success, "Se ha eliminado correctamente el Tecnico");
+
 		else
-			Mensaje = "El técnico no se ha podido eliminar";
+			MostrarMensaje(ToastType.Danger, "No se ha podido eliminar el Tecnico");
 	}
+
 	public void Volver() {
 		Navigation.NavigateTo("/Tecnico/Index");
 	}
