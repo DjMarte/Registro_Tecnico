@@ -5,7 +5,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Tipo T&eacute;cnico Index</PageTitle>
-<div class="container">
+<div class="card">
 	<div class="shadow-lg">
 		@*Header*@
 		<div class="card-header">
@@ -19,11 +19,7 @@
 		@*Body*@
 		<div class="card-body">
 			@*Tabla*@
-			<div class="text-center mt-3">
-				@if (ListaTiposTecnicos != null) {
-					<h4><strong>La lista de t&eacute;cnicos est&aacute; vac&iacute;a</strong></h4>
-				}
-				else {
+			<div class="text-center">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -39,14 +35,13 @@
 								<tr>
 									<td>@tipoTecnico.TipoId</td>
 									<td>@tipoTecnico.Descripcion</td>
-									<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
-									<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
-									<td><button type="button" class="btn btn-outline-primary" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
 								</tr>
 							}
 						</tbody>
 					</table>
-				}
 			</div>
 		</div>
 		@*Footer*@
