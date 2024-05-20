@@ -1,13 +1,15 @@
 ﻿@page "/Tecnico/Create"
 
 @inject TecnicoService tecnicoService
+@inject TipoTecnicoService tipoTecnicoService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
 <PageTitle>Crear T&eacute;cnico</PageTitle>
-<EditForm Model="Tecnico" OnValidSubmit="Crear">
+<EditForm Model="Tecnico" OnValidSubmit="Guardar">
+	<Toasts class="p-3" Messages="Mensaje" Placement="ToastsPlacement.TopRight" />
 	<DataAnnotationsValidator />
-	<div class="container">
+	<div class="card">
 		<div class="shadow-lg">
 			@*Header*@
 			<div class="card-header">
@@ -19,12 +21,12 @@
 			<div class="card-body">
 				<div class="row">
 					@*ID*@
-					<div class="col-2">
+					<div class="col-1">
 						<label class="form-label" for="idTecnico"><strong>T&eacute;cnicoId</strong></label>
-						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId"></InputNumber>
+						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
 					</div>
 					@*Nombres*@
-					<div class="col-4 ms-5">
+					<div class="col-3 ms-3">
 						<label class="form-label" for="nombres"><strong>Nombres</strong></label>
 						<InputText class="form-control" id="nombre" @bind-Value="Tecnico.Nombres"></InputText>
 						<ValidationMessage For="(()=> Tecnico.Nombres)"></ValidationMessage>
@@ -34,6 +36,18 @@
 						<label class="form-label" for="sueldoHora"><strong>SueldoHora</strong></label>
 						<InputNumber class="form-control" id="sueldoHora" @bind-Value="Tecnico.SueldoHora"></InputNumber>
 						<ValidationMessage For="(()=> Tecnico.SueldoHora)"></ValidationMessage>
+					</div>
+					@*Tipo Tecnico*@
+					<div class="col-3 ms-5">
+						<label class="form-label" for="Tipos">Tipo</label>
+						<InputSelect id="Tipos" class="form-select" @bind-Value="Tecnico.TipoId">
+							<opction value="0">Selecciona un Tipo</opction>
+							@foreach (var tipotecnico in TiposTecnicos)
+							{
+								<option value="@tipotecnico.TipoId">@tipotecnico.Descripcion</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="(()=> Tecnico.TipoId)"/>
 					</div>
 				</div>
 			</div>
@@ -46,28 +60,42 @@
 			</div>
 		</div>
 	</div>
-	@Mensaje
 </EditForm>
 
 @code {
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
-	public string? Mensaje { get; set; }
+	public List<TiposTecnicos> TiposTecnicos { get; set; }
+	List<ToastMessage> Mensaje = new List<ToastMessage>();
 
-	public async Task Crear() {
+	protected override async Task OnInitializedAsync() {
+		TiposTecnicos = await tipoTecnicoService.Listar(t => t.TipoId > 0);
+	}
+
+	private void MostrarMensaje(ToastType toastType, string mensaje) {
+		Mensaje.Add(CreateToastMessage(toastType, mensaje));
+	}
+
+	private ToastMessage CreateToastMessage(ToastType toastType, string mensaje)
+	=> new ToastMessage {
+			Type = toastType,
+			Title = "Notificación",
+			HelpText = $"{DateTime.Now}",
+			Message = mensaje,
+		};
+
+	public async Task Guardar() {
 		if (await Validar()) {
-			Mensaje = "Ya existe un técnico con este nombre";
+			MostrarMensaje(ToastType.Warning, $"Ya existe un técnico con este nombre");
 			return;
 		}
 
 		var crear = await tecnicoService.Guardar(Tecnico);
 		if (crear) {
-			Mensaje = "El técnico se ha creado correctamente";
-			Volver();
+			MostrarMensaje(ToastType.Success, $"El técnico {Tecnico.Nombres} se ha creado correctamente");
+			LimpiarPantalla();
 		}
-
-		else {
-			Mensaje = "No se ha podido crear correctamente el técnico";
-		}
+		else
+			MostrarMensaje(ToastType.Danger, "No se ha podido crear correctamente el tipo de técnico");
 	}
 
 	public async Task<bool> Validar() {
@@ -77,7 +105,6 @@
 
 	public void LimpiarPantalla() {
 		Tecnico = new Tecnicos();
-		Mensaje = string.Empty;
 	}
 
 	public void Volver() {

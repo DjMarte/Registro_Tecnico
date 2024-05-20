@@ -1,0 +1,72 @@
+﻿@page "/TipoTecnico/Delete/{TipoTecnicoId:int}"
+
+@inject TipoTecnicoService tipoTecnicoService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar Tipo T&eacute;cnico</PageTitle>
+<Toasts class="p-3" Messages="Mensaje" Placement="ToastsPlacement.TopRight" />
+<div class="card">
+	<div class="shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<div class="text-center">
+				<h3><strong>Eliminar tipo t&eacute;cnico</strong></h3>
+			</div>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="text-center">
+				<h3><strong>¿Desea eliminar este tipo de t&eacute;cnico?</strong></h3>
+			</div>
+			<ul>
+				<li><strong>TipoId: </strong>@TiposTecnicos.TipoId</li>
+				<li><strong>Descripci&oacute;n: </strong>@TiposTecnicos.Descripcion</li>
+			</ul>
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<div class="text-center">
+				<button type="button" class="btn btn-outline-info bi bi-arrow-90deg-left" @onclick="()=>Volver()"> Volver</button>
+				<button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=>Eliminar()"> Eliminar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int TipoTecnicoId { get; set; }
+
+	public TiposTecnicos TiposTecnicos { get; set; } = new TiposTecnicos();
+	public List<ToastMessage> Mensaje = new List<ToastMessage>();
+
+	protected override async Task OnInitializedAsync() {
+		TiposTecnicos = await tipoTecnicoService.BuscarId(TipoTecnicoId);
+	}
+
+	private void MostrarMensaje(ToastType toastType, string mensaje) {
+		Mensaje.Add(CreateToastMessage(toastType, mensaje));
+	}
+
+	private ToastMessage CreateToastMessage(ToastType toastType, string mensaje)
+	=> new ToastMessage {
+			Type = toastType,
+			Title = "Notificación",
+			HelpText = $"{DateTime.Now}",
+			Message = mensaje,
+		};
+
+	public async Task Eliminar() {
+		var eliminar = await tipoTecnicoService.Eliminar(TiposTecnicos);
+		if (eliminar)
+			MostrarMensaje(ToastType.Success, "Se ha eliminado correctamente el Tipo Tecnico");
+
+		else
+			MostrarMensaje(ToastType.Danger, "No se ha podido eliminar el Tipo Tecnico");
+	}
+
+	public void Volver() {
+		Navigation.NavigateTo("/TipoTecnico/Index");
+	}
+}

@@ -1,0 +1,90 @@
+﻿@page "/TipoTecnico/Create"
+
+@inject TipoTecnicoService tipoTecnicoService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Crear Tipo T&eacute;cnico</PageTitle>
+<EditForm Model="TiposTecnicos" OnValidSubmit="Guardar">
+	<Toasts class="p-3" Messages="Mensaje" Placement="ToastsPlacement.TopRight" />
+	<DataAnnotationsValidator />
+	<div class="card">
+		<div class="shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<div class="text-center">
+					<h3><strong>Crear tipo t&eacute;cnico</strong></h3>
+				</div>
+			</div>
+			@*Body*@
+			<div class="card-body">
+				<div class="row">
+					@*Id*@
+					<div class="col-2">
+						<label class="form-label" for="id"><strong>TipoId</strong></label>
+						<InputNumber class="form-control" id="id" @bind-Value="TiposTecnicos.TipoId" readonly></InputNumber>
+					</div>
+					@*Descripción*@
+					<div class="col-5 ms-5">
+						<label class="form-label" for="descripcion"><strong>Descripci&oacute;n</strong></label>
+						<InputText class="form-control" id="descripcion" @bind-Value="TiposTecnicos.Descripcion"></InputText>
+						<ValidationMessage For="(()=> TiposTecnicos.Descripcion)"/>
+					</div>
+				</div>
+			</div>
+			@*Footer*@
+			<div class="card-footer">
+				<div class="text-center">
+					<button type="button" class="btn btn-outline-secondary bi bi-arrow-90deg-left" @onclick="()=>Volver()"> Volver</button>
+					<button type="submit" class="btn btn-outline-success bi bi-floppy"> Crear</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+@code {
+	public TiposTecnicos TiposTecnicos { get; set; } = new TiposTecnicos();
+	List<ToastMessage> Mensaje = new List<ToastMessage>();
+
+	private void MostrarMensaje(ToastType toastType, string mensaje) {
+		Mensaje.Add(CreateToastMessage(toastType, mensaje));
+	}
+
+	private ToastMessage CreateToastMessage(ToastType toastType, string mensaje)
+	=> new ToastMessage {
+			Type = toastType,
+			Title = "Notificación",
+			HelpText = $"{DateTime.Now}",
+			Message = mensaje,
+		};
+
+
+	public async Task Guardar() {
+		if (await Validar()) {
+			MostrarMensaje(ToastType.Warning, $"Ya existe un técnico con esta descripción");
+			return;
+		}
+		var guardar = await tipoTecnicoService.Guardar(TiposTecnicos);
+		if (guardar) {
+			MostrarMensaje(ToastType.Success, $"El Tipo técnico {TiposTecnicos.Descripcion} se ha creado correctamente");
+			LimpiarPantalla();
+		}
+		else
+			MostrarMensaje(ToastType.Danger, "No se ha podido crear correctamente el tipo de técnico");
+	}
+
+	public async Task<bool> Validar() {
+		var existe = await tipoTecnicoService.ExisteDescripcion(TiposTecnicos.TipoId, TiposTecnicos.Descripcion);
+		return existe;
+	}
+
+	public void LimpiarPantalla() {
+		TiposTecnicos = new TiposTecnicos();
+	}
+
+	public void Volver() {
+		Navigation.NavigateTo("/TipoTecnico/Index");
+	}
+}

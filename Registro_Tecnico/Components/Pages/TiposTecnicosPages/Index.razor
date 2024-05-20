@@ -1,0 +1,76 @@
+﻿@page "/TipoTecnico/Index"
+
+@inject TipoTecnicoService tipoTecnicoService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Tipo T&eacute;cnico Index</PageTitle>
+<div class="card">
+	<div class="shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<div class="text-center">
+				<h3><strong>Listado de Tipo de T&eacute;cnicos</strong></h3>
+			</div>
+			<div class="text-end">
+				<button type="button" class="btn btn-outline-primary" @onclick="MostrarPantallaCrear"> Crear</button>
+			</div>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			@*Tabla*@
+			<div class="text-center">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>TipoId</th>
+								<th>Descripci&oacute;n</th>
+								<th>Observar</th>
+								<th>Editar</th>
+								<th>Eliminar</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var tipoTecnico in ListaTiposTecnicos) {
+								<tr>
+									<td>@tipoTecnico.TipoId</td>
+									<td>@tipoTecnico.Descripcion</td>
+									<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
+									<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
+								</tr>
+							}
+						</tbody>
+					</table>
+			</div>
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total Tipo de T&eacute;cnicos: </strong>@ListaTiposTecnicos.Count()</p>
+		</div>
+	</div>
+</div>
+
+@code {
+	public List<TiposTecnicos> ListaTiposTecnicos { get; set; } = new List<TiposTecnicos>();
+
+	protected override async Task OnInitializedAsync() {
+		ListaTiposTecnicos = await tipoTecnicoService.Listar(tp => tp.TipoId > 0);
+	}
+
+	public void MostrarPantallaCrear() {
+		Navigation.NavigateTo("/TipoTecnico/Create");
+	}
+
+	public void MostrarPantallaDetalle(int id) {
+		Navigation.NavigateTo($"/TipoTecnico/Details/{id}");
+	}
+
+	public void MostrarPantallaEditar(int id) {
+		Navigation.NavigateTo($"/TipoTecnico/Edit/{id}");
+	}
+
+	public void MostrarPantallaEliminar(int id) {
+		Navigation.NavigateTo($"/TipoTecnico/Delete/{id}");
+	}
+}

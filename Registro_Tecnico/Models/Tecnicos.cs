@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Registro_Tecnico.Models;
 
@@ -13,5 +15,8 @@ public class Tecnicos
 
     [Range(0.01, float.MaxValue, ErrorMessage ="Ingrese un valor mayor a 0")] 
     [Required(ErrorMessage = "Sueldo obligtorio")]
-    public decimal SueldoHora { get; set; } 
+    public decimal SueldoHora { get; set; }
+
+    [ForeignKey("TipoId")]
+    public int TipoId { get; set; }
 }

@@ -5,8 +5,9 @@
 
 <PageTitle>Modificar T&eacute;cnico</PageTitle>
 <EditForm Model="Tecnico" OnValidSubmit="Modificar">
+	<Toasts class="p-3" Messages="Mensaje" Placement="ToastsPlacement.TopRight" />
 	<DataAnnotationsValidator />
-	<div class="container">
+	<div class="card">
 		<div class="shadow-lg">
 			@*Header*@
 			<div class="card-header">
@@ -20,7 +21,7 @@
 					@*ID*@
 					<div class="col-2">
 						<label class="form-label" for="idTecnico"><strong>T&eacute;cnicoId</strong></label>
-						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId"></InputNumber>
+						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
 					</div>
 					@*Nombres*@
 					<div class="col-4 ms-5">
@@ -45,7 +46,6 @@
 			</div>
 		</div>
 	</div>
-	@Mensaje
 </EditForm>
 
 @code {
@@ -53,33 +53,47 @@
 	public int TecnicoId { get; set; }
 
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
-	public string Mensaje { get; set; } = string.Empty;
+	List<ToastMessage> Mensaje = new List<ToastMessage>();
 
 	protected override async Task OnInitializedAsync() {
 		Tecnico = await tecnicoService.BuscarId(TecnicoId);
 	}
 
+	private void MostrarMensaje(ToastType toastType, string mensaje) {
+		Mensaje.Add(CreateToastMessage(toastType, mensaje));
+	}
+
+	private ToastMessage CreateToastMessage(ToastType toastType, string mensaje)
+	=> new ToastMessage {
+			Type = toastType,
+			Title = "Notificación",
+			HelpText = $"{DateTime.Now}",
+			Message = mensaje,
+		};
+
 	public async Task Modificar() {
 		if (await Validar()) {
-			Mensaje = "Ya existe un técnico con este nombre";
+			MostrarMensaje(ToastType.Warning, $"Ya existe un técnico con este nombre");
 			return;
 		}
 
 		var modificar = await tecnicoService.Guardar(Tecnico);
 		if (modificar) {
-			Mensaje = "El técnico se ha modificado correctamente";
-			Volver();
+			MostrarMensaje(ToastType.Success, $"El técnico se ha modificado correctamente");
+			LimpiarPantalla();
 		}
-
-		else {
-			Mensaje = "No se ha podido modificar correctamente el técnico";
-		}
+		else
+			MostrarMensaje(ToastType.Danger, "No se ha podido modificar correctamente el tipo de técnico");
 	}
 
 	public async Task<bool> Validar() {
 
 		var existe = await tecnicoService.ExisteNombre(Tecnico.TecnicoId, Tecnico.Nombres);
 		return existe;
+	}
+
+	public void LimpiarPantalla() {
+		Tecnico = new Tecnicos();
 	}
 
 	public void Volver() {
