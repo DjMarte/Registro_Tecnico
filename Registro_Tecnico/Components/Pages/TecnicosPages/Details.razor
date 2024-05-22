@@ -6,23 +6,24 @@
 
 <PageTitle>Visualizar T&eacute;cnico</PageTitle>
 <div class="card">
-	<div class="shadow-lg">
-		@*Body*@
-		<div class="card-body">
-			<div class="text-center">
-				<h3><strong>Informaci&oacute;n del t&eacute;cnico @Tecnico.Nombres</strong></h3>
-			</div>
-			<ul>
-				<li><strong>T&eacute;cnicoId: </strong>@Tecnico.TecnicoId</li>
-				<li><strong>Nombres: </strong>@Tecnico.Nombres</li>
-				<li><strong>SueldoHora: </strong>@Tecnico.SueldoHora.ToString("N2")</li>
-			</ul>
+	@*Header*@
+	<div class="card-header text-center">
+		<div class="bg-secondary rounded text-white">
+			<h3><strong>Informaci&oacute;n del t&eacute;cnico @Tecnico.Nombres</strong></h3>
 		</div>
-		@*Footer*@
-		<div class="card-footer">
-			<div class="text-center">
-				<button type="button" class="btn btn-outline-info bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
-			</div>
+	</div>
+	@*Body*@
+	<div class="card-body">
+		<ul>
+			<li><strong>T&eacute;cnicoId: </strong>@Tecnico.TecnicoId</li>
+			<li><strong>Nombres: </strong>@Tecnico.Nombres</li>
+			<li><strong>SueldoHora: </strong>@Tecnico.SueldoHora.ToString("N2")</li>
+		</ul>
+	</div>
+	@*Footer*@
+	<div class="card-footer">
+		<div class="text-center">
+			<button type="button" class="btn btn-outline-info bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
 		</div>
 	</div>
 </div>

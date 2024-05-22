@@ -12,8 +12,8 @@
 	<div class="card">
 		<div class="shadow-lg">
 			@*Header*@
-			<div class="card-header">
-				<div class="text-center">
+			<div class="card-header text-center">
+				<div class="bg-secondary rounded text-white">
 					<h3><strong>Crear un nuevo T&eacute;cnico</strong></h3>
 				</div>
 			</div>
@@ -26,7 +26,7 @@
 						<InputNumber class="form-control" id="idTecnico" @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
 					</div>
 					@*Nombres*@
-					<div class="col-3 ms-3">
+					<div class="col-3 ms-5">
 						<label class="form-label" for="nombres"><strong>Nombres</strong></label>
 						<InputText class="form-control" id="nombre" @bind-Value="Tecnico.Nombres"></InputText>
 						<ValidationMessage For="(()=> Tecnico.Nombres)"></ValidationMessage>
@@ -41,7 +41,7 @@
 					<div class="col-3 ms-5">
 						<label class="form-label" for="Tipos"><strong>Tipo</strong></label>
 						<InputSelect id="Tipos" class="form-select" @bind-Value="Tecnico.TipoId">
-							<option value="0">Selecciona un Tipo</option>
+							<option value="0" disabled>Selecciona un Tipo</option>
 							@foreach (var tipotecnico in TiposTecnicos)
 							{
 								<option value="@tipotecnico.TipoId">@tipotecnico.Descripcion</option>
