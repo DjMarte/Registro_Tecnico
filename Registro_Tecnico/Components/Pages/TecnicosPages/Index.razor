@@ -105,8 +105,7 @@
 	private async Task Buscar() {
 		if (valorFiltro.Trim() != "") {
 			if (filtro == "id" && int.TryParse(valorFiltro, out int tecnicoId)) {
-				var identificador = Tecnicos.Where(t => t.TecnicoId == tecnicoId).ToList();
-				Tecnicos = identificador;
+				Tecnicos = await tecnicoService.Listar(p => p.TecnicoId == tecnicoId);
 			}
 			else if (filtro == "nombres") {
 				Tecnicos = await tecnicoService.Listar(t => t.Nombres.ToLower().Contains(valorFiltro.ToLower()));
