@@ -32,11 +32,6 @@ public class TipoTecnicoService
 			&& tp.Descripcion.ToLower().Equals(descripcion.ToLower()));
 	}
 
-	public TiposTecnicos? ObtenerDescripcion(int id) {
-		return _contexto.TiposTecnicos
-			.FirstOrDefault(t => t.TipoId == id);
-	}
-
 	private async Task<bool> Insertar(TiposTecnicos tipoTecnico) {
 		_contexto.TiposTecnicos.Add(tipoTecnico);
 		return await _contexto.SaveChangesAsync() > 0;

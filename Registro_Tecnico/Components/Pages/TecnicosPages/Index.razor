@@ -97,10 +97,6 @@
 		ListaTiposTecnicos = await tipoTecnicoService.Listar(t => true);
 	}
 
-	public string Descripcion(int id) {
-		var descripcion = tipoTecnicoService.ObtenerDescripcion(id);
-		return descripcion.Descripcion;
-	}
 
 	private async Task Buscar() {
 		if (valorFiltro.Trim() != "") {
