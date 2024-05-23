@@ -68,7 +68,7 @@
 							<tr>
 								<td>@tecnico.TecnicoId</td>
 								<td>@tecnico.Nombres</td>
-								<td>@Descripcion(tecnico.TipoId)</td>
+								<td>@tecnico.TiposTecnicos.Descripcion</td>
 								<td>@tecnico.SueldoHora.ToString("N2")</td>
 								<td><button trype="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> MostrarPantallaEditar(tecnico.TecnicoId)"></button></td>
 								<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> MostrarPantallaDetalle(tecnico.TecnicoId)"></button></td>
