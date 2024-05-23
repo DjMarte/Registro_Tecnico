@@ -19,4 +19,6 @@ public class Tecnicos
 
     [ForeignKey("TipoId")]
     public int TipoId { get; set; }
+
+    public TiposTecnicos? TiposTecnicos { get; set; }
 }
