@@ -17,7 +17,7 @@ public class Tecnicos
     [Required(ErrorMessage = "Sueldo obligtorio")]
     public decimal SueldoHora { get; set; }
 
-    [ForeignKey("TipoId")]
+    [ForeignKey("TiposTecnicos")]
     public int TipoId { get; set; }
 
     public TiposTecnicos? TiposTecnicos { get; set; }
