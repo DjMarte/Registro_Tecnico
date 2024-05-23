@@ -41,6 +41,10 @@
 	public Tecnicos Tecnico { get; set; } = new Tecnicos();
 	List<ToastMessage> Mensaje = new List<ToastMessage>();
 
+	protected override async Task OnInitializedAsync() {
+		Tecnico = await tecnicoService.BuscarId(TecnicoId);
+	}
+
 	private void MostrarMensaje(ToastType toastType, string mensaje) {
 		Mensaje.Add(CreateToastMessage(toastType, mensaje));
 	}
@@ -52,10 +56,6 @@
 			HelpText = $"{DateTime.Now}",
 			Message = mensaje,
 		};
-
-	protected override async Task OnInitializedAsync() {
-		Tecnico = await tecnicoService.BuscarId(TecnicoId);
-	}
 
 	public async Task Eliminar() {
 		var eliminar = await tecnicoService.Eliminar(Tecnico);
