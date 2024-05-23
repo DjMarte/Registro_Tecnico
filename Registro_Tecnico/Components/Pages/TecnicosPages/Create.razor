@@ -67,10 +67,6 @@
 	public List<TiposTecnicos> TiposTecnicos { get; set; }
 	List<ToastMessage> Mensaje = new List<ToastMessage>();
 
-	protected override async Task OnInitializedAsync() {
-		TiposTecnicos = await tipoTecnicoService.Listar(t => t.TipoId > 0);
-	}
-
 	private void MostrarMensaje(ToastType toastType, string mensaje) {
 		Mensaje.Add(CreateToastMessage(toastType, mensaje));
 	}
