@@ -12,33 +12,41 @@
 			<div class="bg-secondary rounded text-white">
 				<h2><strong>Listado de T&eacute;cnicos</strong></h2>
 			</div>
-			<div class="text-end">
-				<button type="button" class="btn btn-outline-primary" @onclick="MostrarPantallaCrear">Crear</button>
-			</div>
 		</div>
 		@*Body*@
 		<div class="card-body">
+			@*Labels*@
+			<div class="row">
+				<div class="col-3">
+					<label class="form-label" for="Filtro"><strong>Filtrar por</strong></label>
+				</div>
+				<div class="col-4">
+					<label class="form-label" for="ValorFiltro"><strong>B&uacute;squeda</strong></label>
+				</div>
+			</div>
+			@*Inputs y Buttons*@
 			<div class="row">
 				@*Filtro*@
 				<div class="col-3">
-					<label class="form-label" for="Filtro"><strong>Filtrar por</strong></label>
 					<InputSelect class="form-select" @bind-Value="filtro">
-						<option value="" disabled>Elija una opci&oacute;n</option>
+						<option value="" disabled>Elija una opción</option>
 						<option value="id"><strong>ID</strong></option>
 						<option value="nombres"><strong>Nombres</strong></option>
 						<option value="tipo"><strong>Tipo</strong></option>
 					</InputSelect>
 				</div>
-				@*Busqueda*@
-				<div class="col-6 ms-3">
-					<label class="form-label" for="ValorFiltro"><strong>B&uacute;squeda</strong></label>
+				@*Búsqueda*@
+				<div class="col-4">
 					<div class="input-group">
-						<input class="form-control" @bind="valorFiltro"  placeholder="Buscar" />
+						<input class="form-control" @bind="valorFiltro" placeholder="Buscar" />
 						<button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
-						<div class="ms-5">
-							<button type="button" class="btn btn-outline-primary bi bi-arrow-counterclockwise" @onclick="Restablecer"> Restablecer</button>
-						</div>
 					</div>
+				</div>
+				<div class="col-auto">
+					<button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise" @onclick="Restablecer"> Restablecer</button>
+				</div>
+				<div class="col text-end">
+					<button type="button" class="btn btn-outline-primary ms-2" @onclick="MostrarPantallaCrear">Crear</button>
 				</div>
 			</div>
 			@*Tabla*@
