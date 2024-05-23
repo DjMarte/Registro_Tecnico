@@ -12,36 +12,66 @@
 			<div class="bg-secondary rounded text-white">
 				<h3><strong>Listado de Tipo de T&eacute;cnicos</strong></h3>
 			</div>
-			<div class="text-end">
-				<button type="button" class="btn btn-outline-primary" @onclick="MostrarPantallaCrear"> Crear</button>
-			</div>
 		</div>
 		@*Body*@
 		<div class="card-body">
+			@*Labels*@
+			<div class="row">
+				<div class="col-3">
+					<label class="form-label" for="Filtro"><strong>Filtrar por</strong></label>
+				</div>
+				<div class="col-4">
+					<label class="form-label" for="ValorFiltro"><strong>B&uacute;squeda</strong></label>
+				</div>
+			</div>
+			@*Inputs y Buttons*@
+			<div class="row">
+				@*Filtro*@
+				<div class="col-3">
+					<InputSelect class="form-select" @bind-Value="filtro">
+						<option value="" disabled>Elija una opción</option>
+						<option value="id">ID</option>
+						<option value="descripcion">Descripci&oacute;n</option>
+					</InputSelect>
+				</div>
+				@*Búsqueda*@
+				<div class="col-4">
+					<div class="input-group">
+						<input class="form-control" @bind="valorFiltro" placeholder="Buscar" />
+						<button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+					</div>
+				</div>
+				<div class="col-auto">
+					<button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise" @onclick="Restablecer"> Restablecer</button>
+				</div>
+				<div class="col text-end">
+					<button type="button" class="btn btn-outline-primary ms-2" @onclick="MostrarPantallaCrear">Crear</button>
+				</div>
+			</div>
 			@*Tabla*@
-			<div class="text-center">
-					<table class="table table-bordered">
-						<thead>
+			<div class="text-center mt-3">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>TipoId</th>
+							<th>Descripci&oacute;n</th>
+							<th>Observar</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var tipoTecnico in ListaTiposTecnicos) {
 							<tr>
-								<th>TipoId</th>
-								<th>Descripci&oacute;n</th>
-								<th>Observar</th>
-								<th>Editar</th>
-								<th>Eliminar</th>
+								<td>@tipoTecnico.TipoId</td>
+								<td>@tipoTecnico.Descripcion</td>
+								<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
+								<td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
+								<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
 							</tr>
-						</thead>
-						<tbody>
-							@foreach (var tipoTecnico in ListaTiposTecnicos) {
-								<tr>
-									<td>@tipoTecnico.TipoId</td>
-									<td>@tipoTecnico.Descripcion</td>
-									<td><button type="button" class="btn btn-outline-info bi bi-eye-fill" @onclick="()=> MostrarPantallaDetalle(tipoTecnico.TipoId)"></button></td>
-									<td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=> MostrarPantallaEditar(tipoTecnico.TipoId)"></button></td>
-									<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=> MostrarPantallaEliminar(tipoTecnico.TipoId)"></button></td>
-								</tr>
-							}
-						</tbody>
-					</table>
+						}
+					</tbody>
+				</table>
 			</div>
 		</div>
 		@*Footer*@
@@ -53,9 +83,31 @@
 
 @code {
 	public List<TiposTecnicos> ListaTiposTecnicos { get; set; } = new List<TiposTecnicos>();
+	private string filtro = "";
+	private string valorFiltro = "";
 
 	protected override async Task OnInitializedAsync() {
 		ListaTiposTecnicos = await tipoTecnicoService.Listar(tp => tp.TipoId > 0);
+	}
+
+	private async Task Buscar() {
+		if (valorFiltro.Trim() != "") {
+			if (filtro == "id" && int.TryParse(valorFiltro, out int tipoId)) {
+				ListaTiposTecnicos = await tipoTecnicoService.Listar(p => p.TipoId == tipoId);
+			}
+			else if (filtro == "descripcion") {
+				ListaTiposTecnicos = await tipoTecnicoService.Listar(t => t.Descripcion.ToLower().Contains(valorFiltro.ToLower()));
+			}
+		}
+		else {
+			ListaTiposTecnicos = await tipoTecnicoService.Listar(t => true);
+		}
+	}
+
+	public async Task Restablecer() {
+		ListaTiposTecnicos = await tipoTecnicoService.Listar(t => t.TipoId > 0);
+		filtro = string.Empty;
+		valorFiltro = string.Empty;
 	}
 
 	public void MostrarPantallaCrear() {
