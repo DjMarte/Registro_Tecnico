@@ -93,8 +93,8 @@
 	private string valorFiltro = "";
 
 	protected override async Task OnInitializedAsync() {
-		Tecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
-		ListaTiposTecnicos = await tipoTecnicoService.Listar(t => t.TipoId > 0);
+		Tecnicos = await tecnicoService.Listar(t => true);
+		ListaTiposTecnicos = await tipoTecnicoService.Listar(t => true);
 	}
 
 	public string Descripcion(int id) {
@@ -123,7 +123,7 @@
 	}
 
 	public async Task Restablecer() {
-		Tecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
+		Tecnicos = await tecnicoService.Listar(t => true);
 		filtro = string.Empty;
 		valorFiltro = string.Empty;
 	}
